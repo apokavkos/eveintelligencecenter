@@ -1,0 +1,25 @@
+services:
+  authelia:
+    image: authelia/authelia:4.38
+    container_name: authelia
+    restart: unless-stopped
+    volumes:
+      - ./config:/config
+    networks:
+      - seat-docker_seat-frontend
+    labels:
+      - "traefik.enable=true"
+      # Route for the Authelia Web Portal
+      - "traefik.http.routers.authelia.rule=Host(`sso.apokavkos.com`)"
+      - "traefik.http.routers.authelia.entrypoints=https"
+      - "traefik.http.routers.authelia.tls.certresolver=primary"
+      # The ForwardAuth Middleware that other Apps will use
+      - "traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://sso.apokavkos.com/"
+      - "traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true"
+      - "traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
+      # Port binding
+      - "traefik.http.services.authelia.loadbalancer.server.port=9091"
+
+networks:
+  seat-docker_seat-frontend:
+    external: true

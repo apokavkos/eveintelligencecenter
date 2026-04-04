@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  mcp-server:
+    build: .
+    container_name: eve-mcp-server
+    restart: unless-stopped
+    environment:
+      - DB_HOST=seat-docker-mariadb-1
+      - DB_USER=root
+      - DB_PASSWORD=I8vOQk5svUGe3nBsx6DgEG
+    networks:
+      - seat-internal
+      - traefik-public
+    labels:
+      - "traefik.enable=true"
+      # Route all traffic for the SSE domain here
+      - "traefik.http.routers.evemcp.rule=Host(`evemcp.apokavkos.com`)"
+      - "traefik.http.routers.evemcp.entrypoints=https"
+      - "traefik.http.routers.evemcp.tls.certresolver=primary"
+      # Port binding inside the Traefik network
+      - "traefik.http.services.evemcp.loadbalancer.server.port=8000"
+      # Secure with Authelia Global SSO ForwardAuth
+      - "traefik.http.routers.evemcp.middlewares=authelia@docker"
+
+networks:
+  seat-internal:
+    external: true
+    name: seat-docker_seat-internal
+  traefik-public:
+    external: true
+    # We use the seat frontend network since traefik is likely attached to it
+    name: seat-docker_seat-frontend

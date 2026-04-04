@@ -1,0 +1,15 @@
+services:
+  eve-sde:
+    image: mariadb:10.11
+    container_name: eve-sde
+    restart: always
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - /opt/eve-sde/data:/var/lib/mysql
+    networks:
+      - seat-docker_seat-internal
+
+networks:
+  seat-docker_seat-internal:
+    external: true

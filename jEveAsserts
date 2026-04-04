@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Define paths
+APP_NAME="jEveAssets"
+DEST_DIR="$HOME/Applications"
+APP_BUNDLE="$DEST_DIR/$APP_NAME.app"
+WORK_DIR="$HOME/Documents/jEveAssets"
+
+# Ensure the local Applications folder exists
+mkdir -p "$DEST_DIR"
+
+# Use macOS's built-in AppleScript compiler to build a native .app bundle
+# We explicitly change directories first so jEveAssets finds its local settings files
+osacompile -e "do shell script \"cd $WORK_DIR && java -jar jeveassets.jar > /dev/null 2>&1 &\"" -o "$APP_BUNDLE"
+
+echo "✅ Success! $APP_NAME has been created in your Home -> Applications folder."
+echo "📂 Opening folder now so you can drag it to your Dock..."
+open "$DEST_DIR"

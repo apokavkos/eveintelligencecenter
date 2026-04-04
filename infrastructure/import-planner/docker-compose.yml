@@ -1,0 +1,18 @@
+services:
+  import-planner:
+    build: .
+    container_name: import-planner
+    restart: unless-stopped
+    networks:
+      - seat-docker_seat-internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.import-planner.rule=Host(`imports.apokavkos.com`)"
+      - "traefik.http.routers.import-planner.entrypoints=https"
+      - "traefik.http.routers.import-planner.tls.certresolver=primary"
+      - "traefik.http.routers.import-planner.middlewares=authelia@docker"
+      - "traefik.http.services.import-planner.loadbalancer.server.port=8501"
+
+networks:
+  seat-docker_seat-internal:
+    external: true

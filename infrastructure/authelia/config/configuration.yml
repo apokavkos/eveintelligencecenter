@@ -1,0 +1,93 @@
+theme: dark
+jwt_secret: "h8zX9kP2rM5wT8vC3bN6mD1jQ4fL7hR0"
+default_2fa_method: totp
+
+server:
+  host: 0.0.0.0
+  port: 9091
+
+log:
+  level: info
+
+totp:
+  issuer: sso.apokavkos.com
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+    password:
+      algorithm: argon2id
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain:
+        - "sso.apokavkos.com"
+      policy: bypass
+    - domain:
+        - "metabase.apokavkos.com"
+      policy: two_factor
+    - domain:
+        - "evemcp.apokavkos.com"
+      policy: two_factor
+
+session:
+  secret: "Y6vB4nM9kC2hJ5xL8pP3vF7rT1wD0gM5"
+  cookies:
+    - domain: "apokavkos.com"
+      authelia_url: "https://sso.apokavkos.com"
+      default_redirection_url: "https://evemcp.apokavkos.com"
+
+storage:
+  encryption_key: "K8jH5vC2bN9mF4zX1qP7hL0rT3wD6gM5bN9mF4zX1qP7hL0r"
+  local:
+    path: /config/db.sqlite3
+
+identity_providers:
+  oidc:
+    hmac_secret: "T3wD6gM5bN9mF4zX1qP7hL0rT3wD6gM5bN9mF"
+    issuer_private_key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEpAIBAAKCAQEAnKQVJ9N99ilBJjdQfZdRyRV1XS6PX23vGn1nHnelzT/F9IEm
+      2MCbJB7GN3CupQLZP78Yu+mDkxq7HVxsqpdD9sX1rkQlSDjT+PkqlixyUwLnvrum
+      PtrSc8T70bJvq/kfRMqIlY5FpVzfphqEX7nprwEZyycYJZaBlnWgHvVZXb8+YTHW
+      CU0j+4tlQl/uv1I9Q9fqpTniuTc34sZiC1mMXEw15tdQS/RA4Bxo4GgWO4M1WlUE
+      aP19jzDmEKYYBPFvf4ZXEeDqURag1qzrBQAWsHg8yYy47lJtnXvNuFsm7u61NWj4
+      WgXWd52U2ch29vOfWIEqE3I6gUsLjRlsZ01wNQIDAQABAoIBAELKE9svan4TiRvq
+      af+jDdRXuftJZwihr1n0LovnKGMj1hwzFYVGWuBD3vC0s0LYvBlaOgmlv9xxgWc7
+      iXoTlX8bWW480EjDMl7unyH5QaXzjyzchj42v5VtYJJBKyyAxLxoP2TFjRy9RP9m
+      PxsyAloEdiMRQFKGoiqtbODGbJxzzDeYSc2GTx3DxQ4UHx8kYAEv+Ald9GbcVq70
+      598J8mOcq5UIZHrPOWZuxwI2uPycjIbWaQRYnAvq+VY83LibCrvSLw5oryJkpH5H
+      nJzJPWHJc5a14b1QY7WK3yAQl7SL2BfxiUKzwTO+8vdKr7sFmxs02YVCNjM6u0Xy
+      elVLieECgYEAyVgQVGW4Uh5Dd1UzdXVY364CP7K2CDKNkiYSLbXnevg/QcFf1CWP
+      rkLlCLyO3gw2oKM9cnrBH/DAKvrvMyrN7Nw2g1RxJl5WfexiR/3axHu4vHGeNG8O
+      O2IpUpoMXld7YjkSQKndvkQ0Lk2t3tkXUtbW2ZwvXOup4gOJgKWMUVMCgYEAxyl7
+      yUNHKevEDk2vZPU4LrPPbUx1p+mF+lsyMyAAPIHjVSp8v3k/0O5+H5AeJ8+ITSdY
+      NnCtFM0PuIIzBOcc9PrY/6KKr2YllERmYxRIxfnCwAfQGSwQOYGeqMA06hxwNBid
+      EHngYbb3Ae/fT9/PDPUF9MLvW3ImH32QNiXQX1cCgYEAt+f1OnGS84brDtPG5fGi
+      lOTm7vG4bTJnt2eI0THG1r5rYQ9VDXyliYFWnC1GvbEgMIgKN0fCoP8RN/Dujaj6
+      YPAf5sM5etdOX0SL3MAVk8SCT7Xj0Hbj4//cSLOmuoFjlKsWbfP6M7EujGCtgNCA
+      Ck1r/2Y2qMQk7ulWLiiISzsCgYAjqjIYoIul3iqFxTObiK4+7sQ+dmq7Xv43Dw22
+      SgzAySHEpo8gWr4q1AqR7GT6DBgEeP87AIJ+LxqZl/c68Ygl9qXVYW4kas5f9r+/
+      DmrZyRgu+zcwyss9ARFAdusC4YTWT3IQ+UJNPU6Ocj4zN4kEcPxYEHB8l7xr9zhT
+      +gGOkQKBgQCJvVrFy3eylcE+xne1JqvAU9fxlRplUiydV9S+1qekbrPkN6AiKQ2b
+      +6SuWa00KQqBMq9z1wy+S2YQNsFPO3lUvDz7i/RNBQEoxw2iKhWJJ0peF0t1RYZX
+      ej7fGZojIiPshPMb7myfgoeRVK0eQz41j04mRMlGAkb6YAdfcIrrgw==
+      -----END RSA PRIVATE KEY-----
+    clients:
+      - id: claude-ai-mcp
+        description: Claude.ai MCP Connector
+        secret: "$pbkdf2-sha512$310000$excg6C3qutpNIBmdpwKXtg$j02bGH/2w8D7LHJ5za/whz91M1H9bERmTHctr5HT91sBk.ETmUWs9lg8LZW9zv40qIrHGn2K6EM4l89a9eFDHA"
+        public: false
+        authorization_policy: two_factor
+        redirect_uris:
+          - "https://claude.ai/oauth/callback"
+        scopes:
+          - openid
+          - profile
+          - email
+        consent_mode: pre-configured
