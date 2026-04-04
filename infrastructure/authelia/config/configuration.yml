@@ -34,6 +34,9 @@ access_control:
     - domain:
         - "evemcp.apokavkos.com"
       policy: two_factor
+    - domain:
+        - "grist.apokavkos.com"
+      policy: one_factor
 
 session:
   secret: "Y6vB4nM9kC2hJ5xL8pP3vF7rT1wD0gM5"

@@ -1,0 +1,30 @@
+services:
+  grist:
+    image: gristlabs/grist:latest
+    container_name: grist
+    restart: unless-stopped
+    volumes:
+      - ./grist-data:/persist
+    environment:
+      - GRIST_SINGLE_ORG=eic
+      - GRIST_DEFAULT_ORG=eic
+      - GRIST_FORWARD_AUTH_HEADER=Remote-Email
+      - APP_HOME_URL=https://grist.apokavkos.com
+      - GRIST_DEFAULT_EMAIL=admin@apokavkos.com
+      - GRIST_BOOTSTRAP_ADMIN=admin@apokavkos.com,apok
+      - GRIST_BOOTSTRAP_FOR_ALL_ORGS=true
+      - GRIST_ORG_ID_FOR_SINGLE_ORG=3
+    networks:
+      - seat-docker_seat-frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=seat-docker_seat-frontend"
+      - "traefik.http.routers.grist.rule=Host(`grist.apokavkos.com`)"
+      - "traefik.http.routers.grist.entrypoints=https"
+      - "traefik.http.routers.grist.tls.certresolver=primary"
+      - "traefik.http.services.grist.loadbalancer.server.port=8484"
+      - "traefik.http.routers.grist.middlewares=authelia@docker"
+
+networks:
+  seat-docker_seat-frontend:
+    external: true

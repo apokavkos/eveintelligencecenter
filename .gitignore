@@ -1,1 +1,13 @@
+# SSH Keys
 .ssh/
+
+# Large database/data files
+infrastructure/eve-sde/data/
+infrastructure/seat-docker/acme/acme.json
+
+# Grist data
+infrastructure/grist/grist-data/
+
+# Authelia DB
+infrastructure/authelia/config/db.sqlite3
+infrastructure/authelia/config/notification.txt

@@ -1,7 +1,7 @@
 users:
   apok:
     displayname: "Apok"
-    password: "$argon2id$v=19$m=65536,t=3,p=4$aKFkZ6VsAINkCKXMo/jTBA$BYPosSv4NyGl6rOc28Y/JG8Yu9L+JhvPb67aFL+idhw"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$+pW8Q03jx4vEw0uW5/yNuw$vzXMg7VtXS1wl62U20eU/LliK6q959ZrPQB0zf8Kp2c"
     email: admin@apokavkos.com
     groups:
       - admins
