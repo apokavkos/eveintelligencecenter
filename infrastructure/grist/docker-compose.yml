@@ -16,6 +16,7 @@ services:
       - GRIST_ORG_ID_FOR_SINGLE_ORG=3
     networks:
       - seat-docker_seat-frontend
+      - seat-docker_seat-internal
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=seat-docker_seat-frontend"
@@ -27,4 +28,6 @@ services:
 
 networks:
   seat-docker_seat-frontend:
+    external: true
+  seat-docker_seat-internal:
     external: true
