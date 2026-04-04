@@ -7,20 +7,21 @@ services:
       - /root/metabase-data:/metabase-data
     environment:
       - MB_DB_FILE=/metabase-data/metabase.db
-    # Connect to the Traefik internal network instead of binding ports broadly!
+    # seat-frontend for Traefik routing, seat-internal for MariaDB access
     networks:
+      - seat-docker_seat-frontend
       - seat-docker_seat-internal
     labels:
       - "traefik.enable=true"
-      # Route traffic dynamically using Traefik and HTTPS Let's Encrypt
+      - "traefik.docker.network=seat-docker_seat-frontend"
       - "traefik.http.routers.metabase.rule=Host(`metabase.apokavkos.com`)"
       - "traefik.http.routers.metabase.entrypoints=https"
       - "traefik.http.routers.metabase.tls.certresolver=primary"
-      # Tell Traefik exactly which port Metabase is listening on internally
       - "traefik.http.services.metabase.loadbalancer.server.port=3000"
-      # Secure with our shiny new Authelia Global SSO!
       - "traefik.http.routers.metabase.middlewares=authelia@docker"
 
 networks:
+  seat-docker_seat-frontend:
+    external: true
   seat-docker_seat-internal:
     external: true
