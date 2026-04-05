@@ -47,5 +47,6 @@ If the server suffers a catastrophic failure and is rebuilt, or if migrating to 
 
 For an exact production startup order and verification commands, use:
 - `/docs/server_deploy_runbook.md`
+- `/docs/access_credentials_lookup.md`
 
 > **See `/docs/` for specific deep-dive guides into configuring the database mappings or integrating MCP AI tools for the first time.**

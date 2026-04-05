@@ -3,6 +3,13 @@
 This runbook is the recommended path to deploy the full stack on a fresh Ubuntu server.
 It is ordered to satisfy network and service dependencies in this repository.
 
+## 0) Access and Credential Lookup
+
+Before running commands, confirm server access and deployment credentials using:
+- `docs/access_credentials_lookup.md`
+
+This prevents deployment interruptions caused by missing SSH credentials or secret values.
+
 ## 1) Prerequisites on Server
 
 Install Docker Engine and Docker Compose plugin.
