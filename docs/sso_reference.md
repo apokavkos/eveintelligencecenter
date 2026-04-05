@@ -28,6 +28,12 @@ ssh apokavkos.com "cat /opt/authelia/config/notification.txt"
 ## Password Generation
 Flat-file deployments strictly enforce robust `Argon2id` cryptographic hashes. Plain text passwords will crash the system.
 
+Use local config files copied from templates:
+- `infrastructure/authelia/config/configuration.yml.example` -> `infrastructure/authelia/config/configuration.yml`
+- `infrastructure/authelia/config/users_database.yml.example` -> `infrastructure/authelia/config/users_database.yml`
+
+The generated `configuration.yml` and `users_database.yml` are intentionally ignored by Git.
+
 To add users to `users_database.yml` or change passwords, utilize the helper script located in this directory:
 ```bash
 # Execute locally:

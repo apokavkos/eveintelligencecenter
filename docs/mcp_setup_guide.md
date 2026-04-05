@@ -1,26 +1,24 @@
 # MCP Configuration Guide: EVE Intelligence Center
 
-This guide explains how to connect your deployed remote MCP server (`https://evemcp.apokavkos.com/sse`) to your AI clients.
+This guide explains how to connect your deployed remote MCP server (`https://evemcp.example.com/sse`) to your AI clients.
 
 ## 1. Antigravity Configuration
 
 Antigravity operates locally on your Mac using the standard Input/Output (`stdio`) transport method for MCP. Because your MCP server is isolated inside the Hetzner internal docker network, we can use an incredibly elegant solution: **Pipe the Docker container's Standard IO securely over SSH.**
 
-I have already injected this exact configuration into your `/Users/apok/.gemini/antigravity/mcp_config.json` file! 
-
-For reference, the JSON configuration I added is:
+Use a config like this in your local MCP client:
 ```json
 {
   "mcpServers": {
     "eve-intelligence": {
       "command": "ssh",
       "args": [
-         "root@apokavkos.com",
+        "root@your-server.example.com",
          "docker", "run", "-i", "--rm",
          "--network", "seat-docker_seat-internal",
          "-e", "DB_HOST=seat-docker-mariadb-1",
-         "-e", "DB_USER=root",
-         "-e", "DB_PASSWORD=I8vOQk5svUGe3nBsx6DgEG",
+        "-e", "DB_USER=seat_readonly",
+        "-e", "DB_PASSWORD=${EIC_DB_PASSWORD}",
          "eve-mcp-server-mcp-server",
          "python", "-c", "from server import mcp; mcp.run(transport='stdio')"
       ]
@@ -28,7 +26,7 @@ For reference, the JSON configuration I added is:
   }
 }
 ```
-**How it works:** When Antigravity boots, it transparently `ssh`s into your Hetzner box, spawns a temporary, read-only Docker container linked to your live databases, ignores the SSE HTTPS setup, and talks to the databases natively.
+**How it works:** When the MCP client boots, it `ssh`s into your server, spawns a temporary read-only Docker container linked to your live databases, and communicates over stdio.
 
 
 ---

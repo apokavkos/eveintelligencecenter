@@ -11,3 +11,9 @@ infrastructure/grist/grist-data/
 # Authelia DB
 infrastructure/authelia/config/db.sqlite3
 infrastructure/authelia/config/notification.txt
+
+# Secret-bearing local config files (use *.example templates)
+infrastructure/seat-docker/.env
+infrastructure/eve-mcp-server/.env
+infrastructure/authelia/config/configuration.yml
+infrastructure/authelia/config/users_database.yml

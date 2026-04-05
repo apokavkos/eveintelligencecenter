@@ -2,6 +2,14 @@
 # Health check script for EVE Intelligence Center
 # Run this on the Hetzner host to verify container statuses
 
+SEAT_ENV_FILE="${SEAT_ENV_FILE:-/opt/seat-docker/.env}"
+if [ -f "$SEAT_ENV_FILE" ]; then
+    # shellcheck disable=SC1090
+    set -a
+    . "$SEAT_ENV_FILE"
+    set +a
+fi
+
 echo "======================================"
 echo "    EVE Intelligence Health Check     "
 echo "======================================"
@@ -27,12 +35,16 @@ done
 
 echo ""
 echo "=> Checking Database Connections..."
-# Simple check to see if port 3306 is open inside the Mariadb containers
-docker exec seat-docker-mariadb-1 mysqladmin -u root -p"$DB_PASSWORD" ping --silent 2>/dev/null
+# Check SeAT DB using configured service user by default.
+if [ -n "$DB_PASSWORD" ]; then
+    docker exec seat-docker-mariadb-1 mysqladmin -u "${DB_USERNAME:-seat}" -p"$DB_PASSWORD" ping --silent 2>/dev/null
+else
+    docker exec seat-docker-mariadb-1 mysqladmin -u "${DB_USERNAME:-seat}" ping --silent 2>/dev/null
+fi
 if [ $? -eq 0 ]; then
     echo "[ PASS ] SeAT MariaDB responds to ping."
 else
-    echo "[ WARN ] SeAT MariaDB ping failed. (Check \$DB_PASSWORD or Docker logs)"
+    echo "[ WARN ] SeAT MariaDB ping failed. (Check $SEAT_ENV_FILE and Docker logs)"
 fi
 
 docker exec eve-sde mysqladmin -u root ping --silent 2>/dev/null

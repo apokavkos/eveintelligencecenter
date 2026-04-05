@@ -1,7 +1,24 @@
 #!/usr/bin/expect -f
 set timeout 20
-set password "N0tallwh0wanderarel0st!1"
-spawn ssh -o StrictHostKeyChecking=no root@apokavkos.com "cat /opt/seat-docker/docker-compose.yml"
+
+if {[info exists env(SSH_PASSWORD)]} {
+    set password $env(SSH_PASSWORD)
+} else {
+    stty -echo
+    send_user "SSH password: "
+    expect_user -re "(.*)\n"
+    stty echo
+    send_user "\n"
+    set password $expect_out(1,string)
+}
+
+if {[info exists env(SSH_TARGET)]} {
+    set ssh_target $env(SSH_TARGET)
+} else {
+    set ssh_target "root@apokavkos.com"
+}
+
+spawn ssh -o StrictHostKeyChecking=no $ssh_target "cat /opt/seat-docker/docker-compose.yml"
 expect {
     "*assword: " {
         send "$password\r"
