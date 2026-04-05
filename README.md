@@ -45,4 +45,7 @@ If the server suffers a catastrophic failure and is rebuilt, or if migrating to 
 3. Enter each `/infrastructure/` folder.
 4. Execute `docker compose up -d --build`.
 
+For an exact production startup order and verification commands, use:
+- `/docs/server_deploy_runbook.md`
+
 > **See `/docs/` for specific deep-dive guides into configuring the database mappings or integrating MCP AI tools for the first time.**
