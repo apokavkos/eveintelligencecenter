@@ -73,6 +73,26 @@ This guide compiles critical troubleshooting steps, lessons learned, and system 
 
 ---
 
+### 6. Published Sidebar Namespace Pollution ("Menu should contain a name entry" 500 Error)
+*   **Symptom**: 
+    Logging in or loading any authenticated page (like `/home`) results in a **500 Internal Server Error**. The logs show: `Seat\Web\Exceptions\PackageMenuBuilderException: Menu should contain a name entry` originating from `AbstractMenu.php:97`.
+*   **Cause**: 
+    The EIC package provider's `boot()` method has a `$this->publishes(...)` definition that copies its sidebar configuration file to `config_path('package.sidebar.eic.php')`. Because the published file base name contains dots (`package.sidebar.eic`), Laravel's automatic config loader interprets it as a nested key and merges it into the `'package.sidebar'` configuration namespace as a nested `'eic'` array. When the SeAT menu renderer loops through the root sidebar config, it encounters this nested `'eic'` array, fails to find the required `'name'` and `'route_segment'` keys at that nested level, and throws an exception.
+*   **Solution**: 
+    1. Remove EIC's sidebar file from the `publishes(...)` array in `/opt/seat-docker/packages/apokavkos/eveintelligencecenter/src/EveIntelligenceCenterServiceProvider.php`.
+    2. Remove any existing published configurations from the containers' config directory:
+       ```bash
+       docker compose exec front rm -f /var/www/seat/config/package.sidebar.eic.php
+       docker compose exec worker rm -f /var/www/seat/config/package.sidebar.eic.php
+       docker compose exec scheduler rm -f /var/www/seat/config/package.sidebar.eic.php
+       ```
+    3. Clear the Laravel configuration cache inside the container:
+       ```bash
+       docker compose exec front php artisan config:clear
+       ```
+
+---
+
 ## 🛠️ Verification & Health Scripts
 
 After rebuilding the server or upgrading packages, run the following sequence to guarantee perfect health:

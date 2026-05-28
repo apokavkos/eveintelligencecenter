@@ -13,7 +13,6 @@ class EveIntelligenceCenterServiceProvider extends AbstractSeatPlugin
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
 
         $this->publishes([
-            __DIR__ . '/Config/package.sidebar.php' => config_path('package.sidebar.eic.php'),
             __DIR__ . '/Config/Permissions/eic.permissions.php' => config_path('eic.permissions.php'),
         ]);
     }
